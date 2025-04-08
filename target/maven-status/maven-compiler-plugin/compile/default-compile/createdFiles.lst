@@ -1,0 +1,10 @@
+playerService/dto/RegisterDto.class
+playerService/repository/SessionRepository.class
+playerService/dto/LoginDto.class
+playerService/repository/PlayerRepository.class
+playerService/dto/LimitDto.class
+playerService/controller/PlayerController.class
+playerService/service/PlayerService.class
+playerService/model/Session.class
+playerService/model/Player.class
+playerService/Application.class

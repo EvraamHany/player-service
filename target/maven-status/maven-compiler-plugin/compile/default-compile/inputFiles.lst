@@ -1,0 +1,10 @@
+/Users/m/selfInvestgation/player-service/player-service/src/main/java/playerService/Application.java
+/Users/m/selfInvestgation/player-service/player-service/src/main/java/playerService/repository/PlayerRepository.java
+/Users/m/selfInvestgation/player-service/player-service/src/main/java/playerService/controller/PlayerController.java
+/Users/m/selfInvestgation/player-service/player-service/src/main/java/playerService/dto/LoginDto.java
+/Users/m/selfInvestgation/player-service/player-service/src/main/java/playerService/dto/RegisterDto.java
+/Users/m/selfInvestgation/player-service/player-service/src/main/java/playerService/repository/SessionRepository.java
+/Users/m/selfInvestgation/player-service/player-service/src/main/java/playerService/dto/LimitDto.java
+/Users/m/selfInvestgation/player-service/player-service/src/main/java/playerService/model/Session.java
+/Users/m/selfInvestgation/player-service/player-service/src/main/java/playerService/model/Player.java
+/Users/m/selfInvestgation/player-service/player-service/src/main/java/playerService/service/PlayerService.java
