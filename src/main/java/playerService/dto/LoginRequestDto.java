@@ -2,13 +2,7 @@ package playerService.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-@Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class LoginRequestDto {
     @Email
     @NotBlank
@@ -16,4 +10,28 @@ public class LoginRequestDto {
 
     @NotBlank
     private String password;
+
+    public LoginRequestDto() {
+    }
+
+    public LoginRequestDto(String email, String password) {
+        this.email = email;
+        this.password = password;
+    }
+
+    public @Email @NotBlank String getEmail() {
+        return email;
+    }
+
+    public void setEmail(@Email @NotBlank String email) {
+        this.email = email;
+    }
+
+    public @NotBlank String getPassword() {
+        return password;
+    }
+
+    public void setPassword(@NotBlank String password) {
+        this.password = password;
+    }
 }
