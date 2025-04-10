@@ -1,47 +1,44 @@
 package playerService.model;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Session {
     @Id
-    private String sessionId;
-    private Long playerId;
-    private LocalDateTime loginTime;
-    private LocalDateTime logoutTime;
+    private String id;
 
-    public String getSessionId() {
-        return sessionId;
-    }
+    @ManyToOne
+    @JoinColumn(name = "player_id", nullable = false)
+    private Player player;
 
-    public void setSessionId(String sessionId) {
-        this.sessionId = sessionId;
-    }
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
 
-    public Long getPlayerId() {
-        return playerId;
-    }
+    @Column
+    private LocalDateTime expiresAt;
 
-    public void setPlayerId(Long playerId) {
-        this.playerId = playerId;
-    }
+    @Column
+    private LocalDateTime loggedOutAt;
 
-    public LocalDateTime getLoginTime() {
-        return loginTime;
-    }
-
-    public void setLoginTime(LocalDateTime loginTime) {
-        this.loginTime = loginTime;
-    }
-
-    public LocalDateTime getLogoutTime() {
-        return logoutTime;
-    }
-
-    public void setLogoutTime(LocalDateTime logoutTime) {
-        this.logoutTime = logoutTime;
+    @PrePersist
+    public void prePersist() {
+        if (id == null) {
+            id = UUID.randomUUID().toString();
+        }
+        if (createdAt == null) {
+            createdAt = LocalDateTime.now();
+        }
+        if (expiresAt == null) {
+            expiresAt = createdAt.plusHours(24); // Default session expiration
+        }
     }
 }
-

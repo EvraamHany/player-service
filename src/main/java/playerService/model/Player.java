@@ -1,104 +1,57 @@
 package playerService.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import java.time.Duration;
 import java.time.LocalDate;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Past;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 @Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class Player {
     @Id
     @GeneratedValue
     private Long id;
+
+    @Email
+    @Column(unique = true, nullable = false)
     private String email;
+
+    @NotBlank
     private String password;
+
+    @NotBlank
     private String name;
+
+    @NotBlank
     private String surname;
+
+    @NotNull
+    @Past
     private LocalDate dateOfBirth;
+
+    @NotBlank
     private String address;
-    private Duration dailyLimit;
-    private Duration usedToday;
-    private boolean active;
 
-    public Long getId() {
-        return id;
-    }
+    private Integer dailyTimeLimit;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+    @Column(columnDefinition = "boolean default false")
+    private boolean active = false;
 
-    public String getEmail() {
-        return email;
-    }
+    @Column
+    private LocalDateTime lastSessionStart;
 
-    public void setEmail(String email) {
-        this.email = email;
-    }
+    @Column
+    private Long todaySessionTime = 0L;
 
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getSurname() {
-        return surname;
-    }
-
-    public void setSurname(String surname) {
-        this.surname = surname;
-    }
-
-    public LocalDate getDateOfBirth() {
-        return dateOfBirth;
-    }
-
-    public void setDateOfBirth(LocalDate dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
-    }
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
-        this.address = address;
-    }
-
-    public Duration getDailyLimit() {
-        return dailyLimit;
-    }
-
-    public void setDailyLimit(Duration dailyLimit) {
-        this.dailyLimit = dailyLimit;
-    }
-
-    public Duration getUsedToday() {
-        return usedToday;
-    }
-
-    public void setUsedToday(Duration usedToday) {
-        this.usedToday = usedToday;
-    }
-
-    public boolean isActive() {
-        return active;
-    }
-
-    public void setActive(boolean active) {
-        this.active = active;
-    }
+    @Column
+    private LocalDateTime lastDailyReset;
 }
-
