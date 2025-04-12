@@ -73,7 +73,6 @@ public class PlayerService {
 
     @Transactional
     public void updatePlayerSessionTime(Player player, long sessionTimeSeconds) {
-        // Reset daily counter if it's a new day
         if (player.getLastDailyReset() != null &&
                 !player.getLastDailyReset().toLocalDate().equals(LocalDate.now())) {
             player.setTodaySessionTime(0L);

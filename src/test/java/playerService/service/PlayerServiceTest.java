@@ -62,7 +62,7 @@ public class PlayerServiceTest {
         validPlayer.setLastDailyReset(LocalDateTime.now());
         validPlayer.setTodaySessionTime(0L);
 
-        validTimeLimit = new TimeLimitDto(1L, 120); // 120 minutes daily limit
+        validTimeLimit = new TimeLimitDto(1L, 120);
     }
 
     @Test
@@ -152,8 +152,8 @@ public class PlayerServiceTest {
     @Test
     void hasExceededTimeLimit_True() {
         Player playerWithTimeLimit = validPlayer;
-        playerWithTimeLimit.setDailyTimeLimit(60); // 60 minutes limit
-        playerWithTimeLimit.setTodaySessionTime(3601L); // 60 minutes + 1 second
+        playerWithTimeLimit.setDailyTimeLimit(60);
+        playerWithTimeLimit.setTodaySessionTime(3601L);
 
         boolean result = playerService.hasExceededTimeLimit(playerWithTimeLimit);
 
@@ -163,8 +163,8 @@ public class PlayerServiceTest {
     @Test
     void hasExceededTimeLimit_False() {
         Player playerWithTimeLimit = validPlayer;
-        playerWithTimeLimit.setDailyTimeLimit(60); // 60 minutes limit
-        playerWithTimeLimit.setTodaySessionTime(3500L); // 58 minutes + 20 seconds
+        playerWithTimeLimit.setDailyTimeLimit(60);
+        playerWithTimeLimit.setTodaySessionTime(3500L);
 
         boolean result = playerService.hasExceededTimeLimit(playerWithTimeLimit);
 
@@ -185,7 +185,7 @@ public class PlayerServiceTest {
     void updatePlayerSessionTime_Success() {
         when(playerRepository.save(any(Player.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        playerService.updatePlayerSessionTime(validPlayer, 300); // Add 5 minutes (300 seconds)
+        playerService.updatePlayerSessionTime(validPlayer, 300);
 
         assertEquals(300L, validPlayer.getTodaySessionTime());
     }
@@ -194,13 +194,13 @@ public class PlayerServiceTest {
     void updatePlayerSessionTime_NewDay() {
         Player playerLastPlayedYesterday = validPlayer;
         playerLastPlayedYesterday.setLastDailyReset(LocalDateTime.now().minusDays(1));
-        playerLastPlayedYesterday.setTodaySessionTime(1800L); // 30 minutes from yesterday
+        playerLastPlayedYesterday.setTodaySessionTime(1800L);
 
         when(playerRepository.save(any(Player.class))).thenAnswer(invocation -> invocation.getArgument(0));
 
-        playerService.updatePlayerSessionTime(playerLastPlayedYesterday, 300); // Add 5 minutes (300 seconds)
+        playerService.updatePlayerSessionTime(playerLastPlayedYesterday, 300);
 
-        assertEquals(300L, playerLastPlayedYesterday.getTodaySessionTime()); // Should reset to 0 + 300
+        assertEquals(300L, playerLastPlayedYesterday.getTodaySessionTime());
         assertEquals(LocalDate.now(), playerLastPlayedYesterday.getLastDailyReset().toLocalDate());
     }
 }

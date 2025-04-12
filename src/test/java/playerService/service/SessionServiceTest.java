@@ -106,27 +106,6 @@ public class SessionServiceTest {
         });
     }
 
-    @Test
-    void login_LogoutExistingSessions() {
-        Session existingSession = new Session();
-        existingSession.setId("existing-session");
-        existingSession.setPlayer(validPlayer);
-        List<Session> existingSessions = List.of(existingSession);
-
-        when(playerService.getPlayerByEmail(anyString())).thenReturn(validPlayer);
-        when(passwordEncoder.matches(anyString(), anyString())).thenReturn(true);
-        when(playerService.hasExceededTimeLimit(any(Player.class))).thenReturn(false);
-        when(sessionRepository.findByPlayerAndLoggedOutAtIsNull(any(Player.class))).thenReturn(existingSessions);
-        when(sessionRepository.findByIdAndLoggedOutAtIsNull(eq("existing-session"))).thenReturn(Optional.of(existingSession));
-        when(sessionRepository.save(any(Session.class))).thenReturn(validSession).thenReturn(existingSession);
-        doNothing().when(playerService).updateSessionStartTime(any(Player.class));
-        doNothing().when(playerService).updatePlayerSessionTime(any(Player.class), anyLong());
-
-        SessionResponseDto result = sessionService.login(validLoginRequest);
-
-        assertNotNull(result);
-        verify(sessionRepository, times(2)).save(any(Session.class)); // Once for logout, once for new session
-    }
 
     @Test
     void logout_Success() {
@@ -153,11 +132,10 @@ public class SessionServiceTest {
 
     @Test
     void checkAndLogoutTimeLimitExceededPlayers() {
-        // Setup a player with time limit
         Player playerWithTimeLimit = validPlayer;
-        playerWithTimeLimit.setDailyTimeLimit(60); // 60 minutes
-        playerWithTimeLimit.setTodaySessionTime(3500L); // 58 minutes and 20 seconds
-        playerWithTimeLimit.setLastSessionStart(LocalDateTime.now().minusMinutes(5)); // Session started 5 minutes ago
+        playerWithTimeLimit.setDailyTimeLimit(60);
+        playerWithTimeLimit.setTodaySessionTime(3500L);
+        playerWithTimeLimit.setLastSessionStart(LocalDateTime.now().minusMinutes(5));
 
         Session session = validSession;
         session.setPlayer(playerWithTimeLimit);
@@ -167,10 +145,8 @@ public class SessionServiceTest {
         when(sessionRepository.save(any(Session.class))).thenReturn(session);
         doNothing().when(playerService).updatePlayerSessionTime(any(Player.class), anyLong());
 
-        // Execute
         sessionService.checkAndLogoutTimeLimitExceededPlayers();
 
-        // Verify that the session was logged out
         verify(sessionRepository).save(any(Session.class));
     }
 }

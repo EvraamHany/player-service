@@ -32,7 +32,7 @@ public class Session {
             createdAt = LocalDateTime.now();
         }
         if (expiresAt == null) {
-            expiresAt = createdAt.plusHours(24); // Default session expiration
+            expiresAt = createdAt.plusHours(24);
         }
     }
 

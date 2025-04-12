@@ -6,8 +6,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import playerService.config.SecurityConfig;
 import playerService.dto.PlayerRegistrationDto;
 import playerService.dto.TimeLimitDto;
 import playerService.exception.PlayerAlreadyExistsException;
@@ -24,6 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(PlayerController.class)
+@Import(SecurityConfig.class)
 public class PlayerControllerTest {
 
     @Autowired
@@ -59,7 +62,7 @@ public class PlayerControllerTest {
         validPlayer.setAddress("123 Test St, Test City");
         validPlayer.setActive(true);
 
-        validTimeLimit = new TimeLimitDto(1L, 120); // 120 minutes daily limit
+        validTimeLimit = new TimeLimitDto(1L, 120);
     }
 
     @Test
@@ -90,7 +93,7 @@ public class PlayerControllerTest {
     @Test
     void registerPlayer_InvalidInput() throws Exception {
         PlayerRegistrationDto invalidRegistration = new PlayerRegistrationDto(
-                "", // Empty email
+                "",
                 "password123",
                 "John",
                 "Doe",
